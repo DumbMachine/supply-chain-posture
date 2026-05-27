@@ -30,7 +30,7 @@ tool checks both, plus the surrounding hygiene that makes them effective.
 ### Verified download (recommended)
 
 ```sh
-REPO=dumbmachine/supply-chain-posture
+REPO=DumbMachine/supply-chain-posture
 VER=v0.1.0   # pick a release tag
 
 curl -fsSLO "https://github.com/$REPO/releases/download/$VER/supply-chain-posture.sh"
@@ -45,7 +45,7 @@ bash supply-chain-posture.sh --fix      # apply low-risk fixes
 ### Quick one-liner
 
 ```sh
-curl -fsSL https://github.com/dumbmachine/supply-chain-posture/releases/latest/download/supply-chain-posture.sh | bash
+curl -fsSL https://github.com/DumbMachine/supply-chain-posture/releases/latest/download/supply-chain-posture.sh | bash
 ```
 
 ### Flags
