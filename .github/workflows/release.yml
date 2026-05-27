@@ -1,0 +1,39 @@
+name: release
+
+# Publish the script + SHA256SUMS as GitHub Release assets on every v* tag,
+# so consumers can download a pinned, hash-verifiable version instead of
+# curl-ing a mutable file from a branch.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # required to create a release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to a commit SHA (the same hygiene this tool checks for).
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Generate checksums
+        run: sha256sum supply-chain-posture.sh > SHA256SUMS
+
+      - name: Create release with verifiable assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "${GITHUB_REF_NAME}" \
+            --notes "Supply-chain posture script \`${GITHUB_REF_NAME}\`.
+
+          Verify before running:
+          \`\`\`sh
+          curl -fsSLO https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/supply-chain-posture.sh
+          curl -fsSLO https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/SHA256SUMS
+          shasum -a 256 -c SHA256SUMS   # macOS  (sha256sum -c on Linux)
+          bash supply-chain-posture.sh
+          \`\`\`" \
+            supply-chain-posture.sh SHA256SUMS

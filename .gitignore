@@ -1,0 +1,4 @@
+# Release artifacts (generated in CI / locally during testing)
+SHA256SUMS
+*.tmp
+.DS_Store
